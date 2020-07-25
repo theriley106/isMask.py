@@ -1,7 +1,7 @@
 # IsMask.py
 Realtime Face Mask Detection in ~10 lines of Python Code
 
+<h3 align="center">Demo</h3>
 <p align="center">
-	<h3>Demo</h3>
 	<img src ="static/demo.gif">
 </p>
