@@ -1,5 +1,9 @@
-# IsMask.py
-Realtime Face Mask Detection in ~10 lines of Python Code
+# isMask.py
+<h1 align="center">Realtime Face Mask Detection in ~10 lines of Python Code</h1>
+
+<p align="center">
+	<img src ="static/demo.gif">
+</p>
 
 ## Instructions
 
@@ -23,9 +27,3 @@ $ ./run.sh
 ```
 
 And visit `http://127.0.0.1:8000` in your browser.
-
-## Demo
-
-<p align="center">
-	<img src ="static/demo.gif">
-</p>
