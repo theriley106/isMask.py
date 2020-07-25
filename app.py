@@ -25,20 +25,17 @@ def readb64(uri):
 def echo_socket(ws):
 	while True:
 		message = ws.receive()
-		# print(message)
 		try:
 			message = str(message).split(",")[1]
-			with open("imageToSave.png", "wb") as fh:
+			with open("tmp", "wb") as fh:
 				fh.write(base64.b64decode(str(message)))
-			small_frame = face_recognition.load_image_file("imageToSave.png")
+			small_frame = face_recognition.load_image_file("tmp")
 			if face_recognition.face_locations(small_frame, model="cnn"):
 				ws.send("FACE MASK ON" if "top_lip" not in str(face_recognition.face_landmarks(small_frame)) else "FACE MASK OFF")
 			else:
 				ws.send("NO FACE")
-			# cv2.imshow("decoded", decoded_img)
 		except Exception as exp:
 			pass
-		# ws.send(str(datetime.datetime.now()))
 		time.sleep(.1)
 
 @app.route('/')
