@@ -1,15 +1,48 @@
-from flask import Flask, render_template, request, url_for, redirect, Markup, jsonify, make_response, send_from_directory, session
+# Copy of http://stackoverflow.com/a/20104705
+from flask import Flask, render_template
+from flask_sockets import Sockets
+import datetime
+import time
 
-app = Flask(__name__, static_url_path='/static')
+import base64
+from PIL import Image
+import cv2
+from io import StringIO
+import numpy as np
 
+app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def index():
-	return render_template("index.html")
+sockets = Sockets(app)
 
-@app.route('/test', methods=['GET'])
-def testPage():
-	return render_template("index1.html")
+def readb64(uri):
+	encoded_data = uri.split(',')[1]
+	nparr = np.fromstring(base64.b64encode(bytes(encoded_data, 'utf-8')), np.uint8)
+	img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+	return img
+
+@sockets.route('/echo')
+def echo_socket(ws):
+	while True:
+		message = ws.receive()
+		# print(message)
+		try:
+			message = str(message).split(",")[1]
+			with open("imageToSave.png", "wb") as fh:
+				fh.write(base64.b64decode(str(message)))
+			# cv2.imshow("decoded", decoded_img)
+		except Exception as exp:
+			print(exp)
+		ws.send(str(datetime.datetime.now()))
+		time.sleep(.1)
+
+@app.route('/')
+def hello():
+	return 'Hello World!'
+
+@app.route('/echo_test', methods=['GET'])
+def echo_test():
+	return render_template('index.html')
 
 if __name__ == '__main__':
-	app.run(host='127.0.0.1', port=5000)
+	app.run()
+	# Start with gunicorn -k flask_sockets.worker app:app
