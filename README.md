@@ -1,2 +1,2 @@
 # IsMask.py
-Simple Python program for realtime face mask detection
+Realtime Face Mask Detection in ~10 lines of Python Code
