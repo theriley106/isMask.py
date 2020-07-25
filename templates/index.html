@@ -25,17 +25,26 @@
         });
  }
  var resultb64="";
+ var ws = new WebSocket("ws://localhost:8000/echo");
+       ws.onopen = function() {
+           ws.send("socket open");
+       };
+       ws.onclose = function(evt) {
+           alert("socket closed");
+       };
+       ws.onmessage = function(evt) {
+            document.getElementById("printresult").innerHTML = evt.data;
+       };
  function capture() {        
     var canvas = document.getElementById('canvas');     
     var video = document.getElementById('video');
     canvas.width = 200;
-    console.log("AYY");
     canvas.height = 200;
     canvas.getContext('2d').drawImage(video, 0, 0, 200,200);
     resultb64=canvas.toDataURL();
-    document.getElementById("printresult").innerHTML = canvas.toDataURL();
+    ws.send(canvas.toDataURL());
+
  }
-  document.getElementById("printresult").innerHTML = resultb64;
 
 </script>
 </html>
