@@ -2,7 +2,7 @@
    <center>
       <body>
          <div id="container">
-            <video width="500" height="375" autoplay="true" id="video"></video>
+            <video width="200" height="200" autoplay="true" id="video"></video>
          </div>
          <h2 id="printresult"></h2>
          <canvas id="canvas" style="overflow:auto;display:none;"></canvas>
@@ -44,7 +44,6 @@
          ws.send(canvas.toDataURL());
       
       }
-      
       setInterval(function(){ capture(); }, 500);
       
    </script>

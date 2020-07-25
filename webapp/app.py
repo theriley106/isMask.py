@@ -5,6 +5,8 @@ import face_recognition
 import base64
 import cv2
 import numpy as np
+import random
+import os
 
 app = Flask(__name__)
 
@@ -26,9 +28,11 @@ def echo_socket(ws):
 				fh.write(base64.b64decode(str(message)))
 			small_frame = face_recognition.load_image_file("tmp")
 			if face_recognition.face_locations(small_frame, model="cnn"):
-				ws.send("FACE MASK ON" if "top_lip" not in str(face_recognition.face_landmarks(small_frame)) else "FACE MASK OFF")
+				ws.send("FACE MASK ON" if "lip" not in str(face_recognition.face_landmarks(small_frame)) else "FACE MASK OFF")
 			else:
 				ws.send("NO FACE")
+		except KeyboardInterrupt:
+			return
 		except Exception as exp:
 			pass
 		time.sleep(.1)
