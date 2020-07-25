@@ -3,14 +3,13 @@
 <center> 
 <body>
 <div id="container">
-<video width="500" height="500" autoplay="true" id="video">
+<video width="500" height="375" autoplay="true" id="video">
 </video>
 </div>
-<button onclick="capture()">Capture</button>  <br> </br>
+<h2 id="printresult"></h2>
+
+
 <canvas id="canvas" style="overflow:auto;display:none;"></canvas>
-<br></br>
-<p> Image Converted to String: </p>
-<p id="printresult"></p>
 </center>
 
 <script>
@@ -25,6 +24,7 @@
         });
  }
  var resultb64="";
+ document.getElementById("video").style.border = "thick solid #0000FF";
  var ws = new WebSocket("ws://localhost:8000/echo");
        ws.onopen = function() {
            ws.send("socket open");
@@ -33,6 +33,14 @@
            alert("socket closed");
        };
        ws.onmessage = function(evt) {
+       	if (evt.data == "NO FACE"){
+       		// document.body.style.backgroundColor = "blue";
+       		document.getElementById("video").style.borderColor = "white";
+       	} else if (evt.data == "FACE MASK OFF"){
+       		document.getElementById("video").style.borderColor = "red";
+       	} else {
+       		document.getElementById("video").style.borderColor = "green";
+       	}
             document.getElementById("printresult").innerHTML = evt.data;
        };
  function capture() {        
