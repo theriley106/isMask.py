@@ -1,60 +1,51 @@
 <html>
-
-<center> 
-<body>
-<div id="container">
-<video width="500" height="375" autoplay="true" id="video">
-</video>
-</div>
-<h2 id="printresult"></h2>
-
-
-<canvas id="canvas" style="overflow:auto;display:none;"></canvas>
-</center>
-
-<script>
- var video = document.querySelector("#video");
- if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function (stream) {
-          video.srcObject = stream;
-        })
-        .catch(function (err0r) {
-          console.log("Something went wrong!");
-        });
- }
- var resultb64="";
- document.getElementById("video").style.border = "thick solid #0000FF";
- var ws = new WebSocket("ws://localhost:8000/echo");
-       ws.onopen = function() {
-           ws.send("socket open");
-       };
-       ws.onclose = function(evt) {
-           alert("socket closed");
-       };
-       ws.onmessage = function(evt) {
-       	if (evt.data == "NO FACE"){
-       		// document.body.style.backgroundColor = "blue";
-       		document.getElementById("video").style.borderColor = "white";
-       	} else if (evt.data == "FACE MASK OFF"){
-       		document.getElementById("video").style.borderColor = "red";
-       	} else {
-       		document.getElementById("video").style.borderColor = "green";
-       	}
-            document.getElementById("printresult").innerHTML = evt.data;
-       };
- function capture() {        
-    var canvas = document.getElementById('canvas');     
-    var video = document.getElementById('video');
-    canvas.width = 200;
-    canvas.height = 200;
-    canvas.getContext('2d').drawImage(video, 0, 0, 200,200);
-    resultb64=canvas.toDataURL();
-    ws.send(canvas.toDataURL());
-
- }
-
- setInterval(function(){ capture(); }, 500);
-
-</script>
+   <center>
+      <body>
+         <div id="container">
+            <video width="500" height="375" autoplay="true" id="video"></video>
+         </div>
+         <h2 id="printresult"></h2>
+         <canvas id="canvas" style="overflow:auto;display:none;"></canvas>
+   </center>
+   <script>
+      var video = document.querySelector("#video");
+      if (navigator.mediaDevices.getUserMedia) {
+           navigator.mediaDevices.getUserMedia({ video: true })
+             .then(function (stream) {
+               video.srcObject = stream;
+             })
+             .catch(function (err0r) {
+               console.log("Something went wrong!");
+             });
+      }
+      var resultb64="";
+      document.getElementById("video").style.border = "thick solid #0000FF";
+      var ws = new WebSocket("ws://localhost:8000/echo");
+            ws.onopen = function() {
+                ws.send("socket open");
+            };
+            ws.onmessage = function(evt) {
+            	if (evt.data == "NO FACE"){
+            		document.getElementById("video").style.borderColor = "white";
+            	} else if (evt.data == "FACE MASK OFF"){
+            		document.getElementById("video").style.borderColor = "red";
+            	} else {
+            		document.getElementById("video").style.borderColor = "green";
+            	}
+                 document.getElementById("printresult").innerHTML = evt.data;
+            };
+      function capture() {        
+         var canvas = document.getElementById('canvas');     
+         var video = document.getElementById('video');
+         canvas.width = 200;
+         canvas.height = 200;
+         canvas.getContext('2d').drawImage(video, 0, 0, 200,200);
+         resultb64=canvas.toDataURL();
+         ws.send(canvas.toDataURL());
+      
+      }
+      
+      setInterval(function(){ capture(); }, 500);
+      
+   </script>
 </html>
