@@ -1,3 +1,4 @@
 face-recognition==1.2.3
 face-recognition-models==0.3.0
-opencv-python==4.1.1.26
+opencv-python==4.1.1.26gunicorn==19.7.1
+Flask-Sockets==0.2.1
